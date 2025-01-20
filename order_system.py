@@ -97,65 +97,6 @@ def get_menu_items_dict(menu):
             menu_items.append(meal)
     return menu_items
 
-def get_item_price(menu, item_name):
-    """
-    Returns the price of a menu item.
-
-    Parameters:
-    menu (dict): The menu dictionary.
-    item_name (str): The name of the menu item.
-
-    Returns:
-    float: The price of the menu item.
-    """
-    for category, items in menu.items():
-        if item_name in items:
-            return items[item_name]
-    return 0.0
-
-
-def print_itemized_receipt(receipt):
-    """
-    Prints an itemized receipt for the customer.
-
-    Parameters:
-    receipt (list): A list of dictionaries containing the menu item name, price,
-                    and quantity ordered.
-    """
-    print("\nYour Order Receipt:")
-    print("------------------------")
-    for item in receipt:
-        print(f"{item['Quantity']} x {item['Item name']} - ${item['Price']:.2f} each")
-    print("------------------------")
-    total = sum(item['Price'] * item['Quantity'] for item in receipt)
-    print(f"Total: ${total:.2f}")
-
-
-def print_menu_heading():
-    """Prints the header for the menu display."""
-    print("\n--- Menu ---")
-
-# Example menu
-menu = {
-    "Pizzas": {
-        "Supreme": 15.25,
-        "Pepperoni": 13.75,
-        "Cheese": 10.50,
-    },
-    "Sides": {
-        "Fries": 4.99,
-        "Garlic Bread": 3.99,
-        "Salad": 7.99
-    }
-}
-
-# Call the place_order function and capture the result
-order, order_total = place_order(menu)
-
-# Print the total price
-print(f"\nTotal Price: ${order_total:.2f}")
-
-
 ##################################################
 #  STARTER CODE
 #  Do not modify any of the code below this line:
