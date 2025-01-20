@@ -62,7 +62,7 @@ def update_order(order, menu_selection, menu_items):
     return order
 
   if menu_selection in menu_items:
-    item_name = menu_items[menu_selection]["Item number"]
+    item_name = menu_items[menu_selection]["Item name"]
     item_price = menu_items[menu_selection]["Price"]
     try:
       quantity = int(input(f"Enter quantity for {item_name}: "))
@@ -88,16 +88,14 @@ def print_itemized_receipt(receipt):
     menu_items (dictionary): A dictionary containing the menu items and their 
                              prices.
   """
-  menu_items = {}
-  i = 1
-  for category, items in receipt.items():
-    for meal in items:
-      menu_items[i] = {
-          "Item name": f"{category} - {meal}", 
-          "Price": items[meal]
-      }
-      i += 1
-  return menu_items
+  print("\nYour Order Receipt:")
+  print("------------------------")
+  for item in receipt:
+    item_name = item["Item Name"]
+    price = item["Price"]
+    quantity = item["Quantity"]
+    print_receipt_line(item_name, price, quantity)
+  print("------------------------")
 
 ##################################################
 #  STARTER CODE
