@@ -29,62 +29,57 @@ def place_order(menu):
             for meal, price in items.items():
                 print(f"  {i}. {meal}: ${price:.2f}")
                 i += 1
-        print("Enter '9' to quit and finalize your order.")
+        customer_choice = input("Enter your choice (or 'n' to quit): ")
 
-        customer_choice = input("Please enter the menu number of the item you want to order: ")
-
-        if customer_choice.lower() == '9':
+        if customer_choice.lower() == 'n':
             break
 
-        if customer_choice.isdigit():
-            menu_selection = int(customer_choice)
-            if menu_selection in range(1, i):
-                order = update_order(order, menu_selection, menu_items, menu)
-                continue_choice = input("Would you like to order another item? (y/n): ")
-                if continue_choice.lower() == 'n':
-                    break
-            else:
-                print("Invalid selection, please choose a valid menu item number.")
-        else:
-            print("Invalid input, please enter a number.")
+    order = update_order(order, customer_choice, menu_items)
 
-    order_total = sum(item['Price'] * item['Quantity'] for item in order)
-    order_total = round(order_total, 2)
+    if order:
+      order_total = sum([item['Price'] * item['Quantity'] for item in order])
 
-    print_itemized_receipt(order)
+      print("\nYour Order:")
+      print_receipt_heading()
+      print_itemized_receipt(order)
+      print_receipt_footer(order_total) 
 
     return order, order_total
 
-def update_order(order, menu_selection, menu_items, menu):
-    """
-    Updates the order with the selected menu item and its quantity.
+def update_order(order, menu_selection, menu_items):
+  """
+  Checks if the customer menu selection is valid, then updates the order.
 
-    Parameters:
+  Parameters:
+    order (list): A list of dictionaries containing the menu item name, price, 
+                 and quantity ordered.
+    menu_selection (str): The customer's menu selection.
+    menu_items (dictionary): A dictionary containing the menu items and their 
+                             prices.
+
+  Returns:
     order (list): A list of dictionaries containing the menu item name, price,
-                    and quantity ordered.
-    menu_selection (int): The selected menu item number.
-    menu_items (list): A list of all available menu items.
-    menu (dict): The full menu with categories and prices.
-
-    Returns:
-    order (list): The updated order list.
-    """
-    item_name = menu_items[menu_selection - 1]
-
-    item_price = get_item_price(menu, item_name)
-
-    quantity = input(f"How many {item_name}(s) would you like to order? ")
-
-    if quantity.isdigit():
-        quantity = int(quantity)
-    else:
-        print("Invalid quantity. Defaulting to 1.")
-        quantity = 1
-
-    order.append({"Item name": item_name, "Price": item_price, "Quantity": quantity})
-    print(f"{quantity} {item_name}(s) added to your order.")
-
+                 and quantity ordered (updated as needed).
+  """
+  try:
+    menu_selection = int(menu_selection) 
+  except ValueError:
+    print("Invalid input. Please enter a valid menu number or 'n' to quit.")
     return order
+
+  if menu_selection in menu_items:
+    item_name = menu_items[menu_selection]["Item name"]
+    item_price = menu_items[menu_selection]["Price"]
+    try:
+      quantity = int(input(f"Enter quantity for {item_name}: "))
+    except ValueError:
+      print("Invalid input. Please enter a valid quantity (integer).")
+      quantity = 1 
+    order.append({"Item Name": item_name, "Price": item_price, "Quantity": quantity})
+  else:
+    print(f"Invalid menu selection: {menu_selection}")
+
+  return order
 
 def get_menu_items_dict(menu):
     """
