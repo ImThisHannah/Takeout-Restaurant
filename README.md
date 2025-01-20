@@ -1,6 +1,6 @@
 # Takeout-Restaurant
 
-a program that allows customers to place orders with a takeout restaurant, and receive an itemized receipt. The core skills you will utilize from your coding experience, specifically Python, will be conditionals, loops, functions, and list comprehension. Data used in this Challenge will be stored in a dictionary and a list of dictionaries.
+This is a program that allows customers to place orders with a takeout restaurant, and receive an itemized receipt. The core skills that are utilize from this coding experience, specifically Python, will be conditionals, loops, functions, and list comprehension. Data used in this Challenge will be stored in a dictionary and a list of dictionaries.
 
 ## User Story
 
