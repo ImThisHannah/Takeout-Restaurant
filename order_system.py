@@ -1,50 +1,44 @@
 def place_order(menu):
-    """
-    Displays a restaurant menu, asks customers for their order, then returns
-    their receipt and total price.
+  """
+  Displays a restaurant menu, asks customers for their order, then returns
+  their receipt and total price.
 
-    Parameters:
+  Parameters:
     menu (dictionary): A nested dictionary containing the menu items and their 
                        prices.
 
-    Returns:
+  Returns:
     order (list): A list of dictionaries containing the menu item name, price,
                   and quantity ordered.
     order_total (float): The total price of the order.
-    """
+  """
+  order = []
+  order_total = 0.0
+  menu_items = get_menu_items_dict(menu)
 
-    order = []
-    order_total = 0.0
-    menu_items = get_menu_items_dict(menu)
-    
-    print("Welcome to the Generic Take Out Restaurant.")
-    
-    while True:
-        i = 1
+  print("Welcome to the Generic Take Out Restaurant.")
 
-        print_menu_heading()
+  while True:
+    print_menu_heading()
 
-        for category, items in menu.items():
-            print(f"{category}:")
-            for meal, price in items.items():
-                print(f"  {i}. {meal}: ${price:.2f}")
-                i += 1
-        customer_choice = input("Enter your choice (or 'n' to quit): ")
+    i = 1
+    for category, items in menu.items():
+      print(f"{category}:")
+      for meal, price in items.items():
+        print(f"  {i}. {meal}: ${price:.2f}")
+        i += 1
 
-        if customer_choice.lower() == 'n':
-            break
+    customer_choice = input("Enter your choice by the number (or 'n' to quit): ")
+
+    if customer_choice.lower() == 'n':
+      break
 
     order = update_order(order, customer_choice, menu_items)
 
     if order:
       order_total = sum([item['Price'] * item['Quantity'] for item in order])
 
-      print("\nYour Order:")
-      print_receipt_heading()
-      print_itemized_receipt(order)
-      print_receipt_footer(order_total) 
-
-    return order, order_total
+  return order, order_total
 
 def update_order(order, menu_selection, menu_items):
   """
@@ -68,7 +62,7 @@ def update_order(order, menu_selection, menu_items):
     return order
 
   if menu_selection in menu_items:
-    item_name = menu_items[menu_selection]["Item name"]
+    item_name = menu_items[menu_selection]["Item number"]
     item_price = menu_items[menu_selection]["Price"]
     try:
       quantity = int(input(f"Enter quantity for {item_name}: "))
@@ -81,21 +75,29 @@ def update_order(order, menu_selection, menu_items):
 
   return order
 
-def get_menu_items_dict(menu):
-    """
-    Returns a list of all menu items from the nested menu dictionary.
+def print_itemized_receipt(receipt):
+  """
+  Creates a dictionary of menu items and their prices mapped to their menu 
+  number.
 
-    Parameters:
-    menu (dict): The menu dictionary containing categories and items.
+  Parameters:
+    menu (dictionary): A nested dictionary containing the menu items and their 
+                       prices.
 
-    Returns:
-    list: A flat list of all menu items.
-    """
-    menu_items = []
-    for category, items in menu.items():
-        for meal in items:
-            menu_items.append(meal)
-    return menu_items
+  Returns:
+    menu_items (dictionary): A dictionary containing the menu items and their 
+                             prices.
+  """
+  menu_items = {}
+  i = 1
+  for category, items in receipt.items():
+    for meal in items:
+      menu_items[i] = {
+          "Item name": f"{category} - {meal}", 
+          "Price": items[meal]
+      }
+      i += 1
+  return menu_items
 
 ##################################################
 #  STARTER CODE
